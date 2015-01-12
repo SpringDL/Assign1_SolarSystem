@@ -4,8 +4,8 @@
 
 //Global Variables
 var scene, camera, renderer;
-var sun, mercury;
-var mercuryPivot;
+var sun, mercury, venus, earth;
+var mercuryPivot, venusPivot, earthPivot;
 
 //Initialize
 function init() {
@@ -28,8 +28,8 @@ function init() {
 //
 function createGeometry() {
     //Create Sun
-    var sunGeometry = new THREE.SphereGeometry(20, 20, 20);
-    var sunMaterial = new THREE.MeshLambertMaterial({ color: 0xfdb813 });
+    var sunGeometry = new THREE.SphereGeometry(50, 50, 50);
+    var sunMaterial = new THREE.MeshLambertMaterial({ color: 0xFDB813 });
     sun = new THREE.Mesh(sunGeometry, sunMaterial);
     //Position Sun
     sun.position.set (0, 0, 0);
@@ -39,26 +39,50 @@ function createGeometry() {
     //Create Pivot Points for Planets
     mercuryPivot = new THREE.Object3D();
     sun.add(mercuryPivot);
+    venusPivot = new THREE.Object3D();
+    sun.add(venusPivot);
+    earthPivot = new THREE.Object3D();
+    sun.add(earthPivot);
 
     //Create Mercury
     var mercuryGeometry = new THREE.SphereGeometry(5, 20, 20);
     var mercuryMaterial = new THREE.MeshLambertMaterial({ color: 0x999999 });
     mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
     //Position Mercury
-    mercury.position.set(0, 0, -40);
+    mercury.position.set(0, 0, -70);
     //Add Mercury to Scene
     scene.add(mercury);
     //Make Child of Pivot Point
     mercuryPivot.add(mercury);
 
+    //Create Venus
+    var venusGeometry = new THREE.SphereGeometry(10, 20, 20);
+    var venusMaterial = new THREE.MeshLambertMaterial({ color: 0xFF9900 });
+    venus = new THREE.Mesh(venusGeometry, venusMaterial);
+    //Position Venus
+    venus.position.set(0, 0, -100);
+    //Add Venus to Scene
+    scene.add(venus);
+    //Make Child of Pivot Point
+    venusPivot.add(venus);
 
+    //Create Earth
+    var earthGeometry = new THREE.SphereGeometry(10, 20, 20);
+    var earthMaterial = new THREE.MeshLambertMaterial({ color: 0x0099FF });
+    earth = new THREE.Mesh(earthGeometry, earthMaterial);
+    //Position Earth
+    earth.position.set(0, 0, -140);
+    //Add Earth to Scene
+    scene.add(earth);
+    //Make Child of Pivot Point
+    earthPivot.add(earth);
 
 
 
 
     //Position Camera
     camera.position.x = 0;
-    camera.position.y = 150;
+    camera.position.y = 250;
     camera.position.z = 0;
     camera.lookAt(scene.position);
 
@@ -74,7 +98,9 @@ function createGeometry() {
 
 //
 function animate() {
-    mercuryPivot.rotation.y -= 0.01;
+    //mercuryPivot.rotation.y -= 0.01;
+    //venusPivot.rotation.y -= 0.01;
+    //earthPivot.rotation.y -= 0.01;
 
     // render using requestAnimationFrame
     requestAnimationFrame(animate);
