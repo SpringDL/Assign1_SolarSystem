@@ -178,6 +178,9 @@ function createGeometry() {
     var spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(0, 500, 0);
     scene.add(spotLight);
+    var spotLight2 = new THREE.SpotLight(0xffffff);
+    spotLight2.position.set(0, 500, 1000);
+    scene.add(spotLight2);
 }
 
 //
