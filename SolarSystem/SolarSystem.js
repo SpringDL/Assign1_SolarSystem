@@ -7,9 +7,16 @@ var scene, camera, renderer;
 var sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto;
 var mercuryPivot, venusPivot, earthPivot, marsPivot, jupiterPivot, saturnPivot, uranusPivot, neptunePivot, plutoPivot;
 var saturnRings;
+var moon, moonPivot;
+var sMoon1, sMoon2, sMoonPivot, sMoonPivot2;
+var spinMoons = true;
+var gui, controls;
 
 //Initialize
 function init() {
+    //Create Gui + Controls
+    initGuiControl();
+
     //Create Scene
     scene = new THREE.Scene();
 
@@ -164,9 +171,66 @@ function createGeometry() {
     //Make Child of Pivot Point
     plutoPivot.add(pluto);
 
+
+
+    //Setup Earth's Moon Orbit
+    moonPivot = new THREE.Object3D();
+    earth.add(moonPivot);
+
+    //Create Earth's Moon
+    var moonGeometry = new THREE.SphereGeometry(3, 20, 20);
+    var moonMaterial = new THREE.MeshLambertMaterial({ color: 0x999999 });
+    moon = new THREE.Mesh(moonGeometry, moonMaterial);
+    //Position Earth's Moon
+    moon.position.set(0, 0, -20);
+    //Add Earth's Moon to Scene
+    scene.add(moon);
+    //Make Child of Pivot Point
+    moonPivot.add(moon);
+
+
+
+    //Setup Saturn's Moon Orbit
+    sMoonPivot = new THREE.Object3D();
+    saturn.add(sMoonPivot);
+    sMoonPivot.rotation.x = 75;
+
+    //Create Saturn's Moon
+    var sMoon1Geometry = new THREE.SphereGeometry(4, 20, 20);
+    var sMoon1Material = new THREE.MeshLambertMaterial({ color: 0x99FF99 });
+    sMoon1 = new THREE.Mesh(sMoon1Geometry, sMoon1Material);
+    //Position Saturn's Moon
+    sMoon1.position.set(0, 0, -30);
+    //Add Earth's Saturn to Scene
+    scene.add(sMoon1);
+    //Make Child of Pivot Point
+    sMoonPivot.add(sMoon1);
+
+
+
+    //Setup Saturn's Moon Orbit
+    sMoonPivot2 = new THREE.Object3D();
+    saturn.add(sMoonPivot2);
+    sMoonPivot2.rotation.x = 80;
+
+    //Create Saturn's Moon
+    var sMoon2Geometry = new THREE.SphereGeometry(6, 20, 20);
+    var sMoon2Material = new THREE.MeshLambertMaterial({ color: 0x6666FF });
+    sMoon2 = new THREE.Mesh(sMoon2Geometry, sMoon2Material);
+    //Position Saturn's Moon
+    sMoon2.position.set(0, 0, 40);
+    //Add Earth's Saturn to Scene
+    scene.add(sMoon2);
+    //Make Child of Pivot Point
+    sMoonPivot2.add(sMoon2);
+
+
+
+
+
     //Position Camera
     camera.position.x = 0;
-    camera.position.y = 450;
+    camera.position.y = 550;
     camera.position.z = 0;
     camera.lookAt(scene.position);
 
@@ -185,19 +249,45 @@ function createGeometry() {
 
 //
 function animate() {
-    mercuryPivot.rotation.y -= 0.09;
-    venusPivot.rotation.y -= 0.08;
-    earthPivot.rotation.y -= 0.07;
-    marsPivot.rotation.y -= 0.06;
-    jupiterPivot.rotation.y -= 0.05;
-    saturnPivot.rotation.y -= 0.04;
-    uranusPivot.rotation.y -= 0.03;
-    neptunePivot.rotation.y -= 0.02;
-    plutoPivot.rotation.y -= 0.01;
+    mercuryPivot.rotation.y -= controls.rotationSpeed * 0.09;
+    venusPivot.rotation.y -= controls.rotationSpeed * 0.08;
+    earthPivot.rotation.y -= controls.rotationSpeed * 0.07;
+    marsPivot.rotation.y -= controls.rotationSpeed * 0.06;
+    jupiterPivot.rotation.y -= controls.rotationSpeed * 0.05;
+    saturnPivot.rotation.y -= controls.rotationSpeed * 0.04;
+    uranusPivot.rotation.y -= controls.rotationSpeed * 0.03;
+    neptunePivot.rotation.y -= controls.rotationSpeed * 0.02;
+    plutoPivot.rotation.y -= controls.rotationSpeed * 0.01;
+
+    if (spinMoons) {
+        moonPivot.rotation.y += 0.07;
+        sMoonPivot.rotation.y += 0.09;
+        sMoonPivot2.rotation.y += 0.05;
+    }
 
     // render using requestAnimationFrame
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+}
+
+//
+function initGuiControl() {
+    controls = new function () {
+        this.rotationSpeed = 0.25;
+
+        //
+        this.moonRotation = function () {
+            if (spinMoons) {
+                spinMoons = false;
+            } else if (!spinMoons) {
+                spinMoons = true;
+            }
+        };
+    }
+
+    gui = new dat.GUI();
+    gui.add(controls, 'rotationSpeed', -50.0, 50.0, 1);
+    gui.add(controls, 'moonRotation');
 }
 
 //

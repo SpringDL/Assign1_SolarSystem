@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <Content Include="libs\dat.gui.min.js" />
     <Content Include="libs\three.min.js" />
     <Content Include="SolarSystem.js" />
     <Content Include="Web.config" />
